@@ -81,35 +81,34 @@ def add_person(name, verbose=False):
         detections = detector.forward()
 
         # loop over the detections
-        for i in range(0, detections.shape[2]):
-            # extract the confidence (i.e., probability) associated with
-            # the prediction
-            confidence = detections[0, 0, i, 2]
-            # filter out weak detections
-            if confidence > params['confidence']:
-                # compute the (x, y)-coordinates of the bounding box for
-                # the face
-                box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-                (startX, startY, endX, endY) = box.astype("int")
-                # extract the face ROI
+        # extract the confidence (i.e., probability) associated with
+        # the prediction
+        i = np.argmax(detections[0, 0, :, 2])
+        confidence = detections[0, 0, i, 2]
+        # filter out weak detections
+        if confidence > params['confidence']:
+            # compute the (x, y)-coordinates of the bounding box for
+            # the face
+            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+            (startX, startY, endX, endY) = box.astype("int")
+            # extract the face ROI
+            face = frame[startY:endY, startX:endX]
+            (fH, fW) = face.shape[:2]
+            # ensure the face width and height are sufficiently large
+            if fW < 20 or fH < 20:
+                continue
+
+            color = (0, 0, 255)
+            if nb_photo_taken < params['nb_photos'] and time.time() - start_time > 0.5:
+                color = (0, 255, 0)
+                start_time = time.time()
                 face = frame[startY:endY, startX:endX]
-                (fH, fW) = face.shape[:2]
-                # ensure the face width and height are sufficiently large
-                if fW < 20 or fH < 20:
-                    continue
+                filename = os.path.join(path, f"{str(nb_photo_taken).zfill(3)}.jpg")
+                cv2.imwrite(filename, face)
+                print(f'[INFO] Writing photo {filename} to disk') if verbose else 0
+                nb_photo_taken += 1
 
-                color = (0, 0, 255)
-                if nb_photo_taken < params['nb_photos'] and time.time() - start_time > 1:
-                    color = (0, 255, 0)
-                    start_time = time.time()
-                    face = frame[startY:endY, startX:endX]
-                    filename = os.path.join(path, f"{str(nb_photo_taken).zfill(3)}.jpg")
-                    cv2.imwrite(filename, face)
-                    print(f'[INFO] Writing photo {filename} to disk')
-                    nb_photo_taken += 1
-
-                cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
-                break
+            cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
 
         # update the FPS counter
         fps.update()
@@ -124,7 +123,7 @@ def add_person(name, verbose=False):
 
     # stop the timer and display FPS information
     fps.stop()
-    print(f"[INFO] {nb_photo_taken} have been saved in {path}") if verbose else 0
+    print(f"[INFO] {nb_photo_taken} photos have been saved in {path}") if verbose else 0
     print("[INFO] elapsed time: {:.2f}".format(fps.elapsed())) if verbose else 0
     print("[INFO] approx. FPS: {:.2f}".format(fps.fps())) if verbose else 0
 
