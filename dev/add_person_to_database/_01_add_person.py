@@ -35,7 +35,7 @@ def load_models(verbose=False):
     return detector, embedder
 
 
-def add_person(name, verbose=False):
+def extract_faces_from_stream(name, verbose=False):
     # Create the folder of not exists
     path = os.path.join(params['dataset'], name)
     if not os.path.exists(path):
@@ -133,8 +133,12 @@ def add_person(name, verbose=False):
     return path
 
 
+def extract_faces_from_video(videopath):
+    pass
+
+
 if __name__ == '__main__':
-    data_path = add_person('moi', verbose=True)
+    data_path = extract_faces_from_stream('moi', verbose=True)
     assert len(glob(os.path.join(data_path, '*'))) == params['nb_photos']
 
 
