@@ -14,7 +14,7 @@ images : "./images"
 # RESOLUTION
 
 face_resolution : !!python/tuple [200, 200]
-video_resolution : !!python/tuple [500, 600]
+video_resolution : !!python/tuple [700, 900]
 
 
 # Face detector's confidence
