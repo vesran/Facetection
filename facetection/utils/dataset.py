@@ -25,7 +25,8 @@ def write_utkface_record(input_dir, output_file):
     filenames = glob(os.path.join(input_dir, '*'))
 
     for img_path in tqdm(filenames):
-        img = np.array(io.imread(img_path))
+        with open(img_path, 'rb') as f:
+            img = np.array(f.read())
 
         labels = img_path.split(os.sep)[-1].split('_')
         if len(labels) != 4:
@@ -51,9 +52,7 @@ def write_utkface_record(input_dir, output_file):
     writer.close()
 
 
-def read_utkface_tfrecord(tfrecords_path):
-    raw_image_dataset = tf.data.TFRecordDataset(tfrecords_path)
-
+def _parse_image_function(example_proto):
     # Create a dictionary describing the features.
     image_feature_description = {
         'age': tf.io.FixedLenFeature([], tf.int64),
@@ -62,25 +61,36 @@ def read_utkface_tfrecord(tfrecords_path):
         'image_raw': tf.io.FixedLenFeature([], tf.string),
     }
 
-    def _parse_image_function(example_proto):
-        # Parse the input tf.Example proto using the dictionary above.
-        return tf.io.parse_single_example(example_proto, image_feature_description)
+    # Parse the input tf.Example proto using the dictionary above.
+    parsed = tf.io.parse_single_example(example_proto, image_feature_description)
+    return parsed
 
+
+def read_utkface_tfrecord(tfrecords_path, label=None):
+    raw_image_dataset = tf.data.TFRecordDataset(tfrecords_path)
     parsed_image_dataset = raw_image_dataset.map(_parse_image_function)
-
     return parsed_image_dataset
 
 
-def parse_data(features, label=None):
+def decode_image(tf_image_raw):
+    image_raw = tf_image_raw.numpy()
+    img_1d = np.frombuffer(image_raw, dtype=np.uint8)
+    reconstructed_img = img_1d.reshape((params['face_resolution'][0], params['face_resolution'][0], -1))
+    return reconstructed_img
+
+
+def parse_data(features, label='gender'):
     """ MapDataset to model's input : image, label
     :param features:
-    :param label:
+    :param label: "age", "gender" or "race"
     :return:
     """
-    image_raw = features['image_raw'].numpy()
-    img_1d = np.frombuffer(image_raw, dtype=np.uint8)
-    reconstructed_img = img_1d.reshape((params['face_resolution'], params['face_resolution'], -1))
-    return reconstructed_img, features[label]
+    image_string = features['image_raw']
+    image_decoded = tf.image.decode_jpeg(image_string, channels=3)
+    image = tf.cast(image_decoded, tf.float32)
+    image = tf.image.resize(image, (params['face_resolution'][0], params['face_resolution'][0]))
+    image = image / 255.0  # Preprocessing
+    return image, features[label]
 
 
 if __name__ == '__main__':
