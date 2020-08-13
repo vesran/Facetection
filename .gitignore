@@ -6,3 +6,5 @@ Pipfile.lock
 .idea
 .ipynb_checkpoints
 facetection/utils/__pycache__/
+*.tfrecords
+*.tfrecord
