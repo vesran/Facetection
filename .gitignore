@@ -1,10 +1,10 @@
-dataset
+datasets
 images
 tut_*
 Pipfile
 Pipfile.lock
 .idea
 .ipynb_checkpoints
-facetection/utils/__pycache__/
+facetection/dataset/__pycache__/
 *.tfrecords
 *.tfrecord

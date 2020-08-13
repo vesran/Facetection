@@ -19,7 +19,7 @@ embedder = cv2.dnn.readNetFromTorch(params['face_embedding_model'])
 
 
 def recognize_face_name(face):
-    """ Classifies a face image according to the existing names in the dataset folder
+    """ Classifies a face image according to the existing names in the datasets folder
     :param face: face image
     :return: tuple consisting of the predicted name and the confidence
     """

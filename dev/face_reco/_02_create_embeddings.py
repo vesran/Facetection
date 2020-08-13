@@ -34,7 +34,7 @@ def embed_face(face_or_path):
     return vec.flatten()
 
 
-directories = glob(os.path.join(params['dataset'], '*'))
+directories = glob(os.path.join(params['datasets'], '*'))
 data = {}
 for directory in directories:
     label = directory.split(os.path.sep)[-1]

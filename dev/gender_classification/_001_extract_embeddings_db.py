@@ -1,5 +1,5 @@
 """
--> The goal is to create a folder next to the dataset folder containing embeddings for each face image.
+-> The goal is to create a folder next to the datasets folder containing embeddings for each face image.
 
 * Load model
 * Loop through all faces
@@ -21,7 +21,7 @@ import os
 # INIT
 DETECTOR = "./face_detection_model"
 EMBEDDING_MODEL = "./model/face_embedding_model/openface.nn4.small2.v1.t7"
-DATASET = "./dataset"
+DATASET = "./datasets"
 CONFIDENCE = 0.5
 EMBEDDINGS = "./output/embeddings.pickle"
 
@@ -36,7 +36,7 @@ detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 print("[INFO] loading face recognizer...")
 embedder = cv2.dnn.readNetFromTorch(EMBEDDING_MODEL)
 
-# grab the paths to the input images in our dataset
+# grab the paths to the input images in our datasets
 print("[INFO] quantifying faces...")
 imagePaths = list(paths.list_images(DATASET))
 # initialize our lists of extracted facial embeddings and
@@ -46,7 +46,7 @@ knownNames = []
 # initialize the total number of faces processed
 total = 0
 
-# grab the paths to the input images in our dataset
+# grab the paths to the input images in our datasets
 print("[INFO] quantifying faces...")
 imagePaths = list(paths.list_images(DATASET))
 # initialize our lists of extracted facial embeddings and

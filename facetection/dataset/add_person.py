@@ -39,7 +39,7 @@ def load_models(verbose=False):
 
 def extract_faces_from_stream(name, verbose=False, delay=0.5):
     # Create the folder of not exists
-    path = os.path.join(params['dataset'], name)
+    path = os.path.join(params['datasets'], name)
     if not os.path.exists(path):
         os.makedirs(path)
     else:
@@ -138,7 +138,7 @@ def extract_faces_from_stream(name, verbose=False, delay=0.5):
 
 def extract_faces_from_video(name, video_path, verbose=False, delay=0.5):
     # Create the folder of not exists
-    path = os.path.join(params['dataset'], name)
+    path = os.path.join(params['datasets'], name)
     if not os.path.exists(path):
         os.makedirs(path)
     else:

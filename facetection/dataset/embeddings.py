@@ -1,5 +1,10 @@
+"""
+Creates embeddings for a image using FaceNet.
+It contains functions to embed a single face as well as all images in a specified directory.
+"""
+
+
 import cv2
-import numpy as np
 import os, yaml
 from glob import glob
 import pickle
@@ -39,7 +44,7 @@ def pickle_dataset():
     It pickles the mentioned dictionary.
     :return: dictionary
     """
-    directories = glob(os.path.join(params['dataset'], '*'))
+    directories = glob(os.path.join(params['datasets'], '*'))
     data = {}
     for directory in directories:
         label = directory.split(os.path.sep)[-1]

@@ -1,4 +1,4 @@
-from facetection.utils.embeddings import pickle_dataset
+from facetection.dataset.embeddings import pickle_dataset
 
 import os
 import pickle
@@ -9,7 +9,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
 
 
-# Init dataset for names recognition
+# Init datasets for names recognition
 embeddings_file = './serialized/embeddings.pkl'
 
 if not os.path.exists(embeddings_file):

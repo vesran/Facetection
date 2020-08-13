@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 import pickle
 
-from facetection.utils.dataset import parse_data, read_utkface_tfrecord
+from facetection.dataset.io_records import parse_data, read_utkface_tfrecord
 
 
 BATCH_SIZE = 32

@@ -1,6 +1,5 @@
 import tensorflow as tf
 import numpy as np
-import skimage.io as io
 import os
 import yaml
 from tqdm import tqdm
@@ -83,7 +82,7 @@ def parse_data(features, label='gender'):
     """ MapDataset to model's input : image, label
     :param features:
     :param label: "age", "gender" or "race"
-    :return:
+    :return: tuple
     """
     image_string = features['image_raw']
     image_decoded = tf.image.decode_jpeg(image_string, channels=3)
