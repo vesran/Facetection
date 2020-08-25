@@ -1,8 +1,4 @@
 import cv2
-import imutils
-import params
-import numpy as np
-import tensorflow as tf
 
 from facetection.face_detection import find_faces
 from facetection.predict import get_name, get_age, get_gender
@@ -17,7 +13,7 @@ def identify(image):
         face = image[face_coords[2]:face_coords[3], face_coords[0]:face_coords[1]]
         age = get_age(face)
         gender = get_gender(face)
-        name = get_name(face)
+        name = get_name(face, threshold=0.3)
 
         arr.append([face_coords[0], face_coords[1], face_coords[2], face_coords[3],
                     age, gender, name])
