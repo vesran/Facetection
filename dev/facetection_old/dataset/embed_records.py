@@ -3,8 +3,6 @@ import cv2
 
 from dev.facetection_old.dataset.io_records import parse_data, read_utkface_tfrecord
 
-
-
 training_file = './serialized/training_set.tfrecords'
 
 init_ds = read_utkface_tfrecord(training_file, label='gender')
