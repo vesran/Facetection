@@ -6,7 +6,7 @@ import params
 
 
 age_recognizer = tf.keras.models.load_model('./serialized/age_recognizer.h5')
-gender_recognizer = tf.keras.models.load_model('./serialized/gender_recognizer.h5')
+gender_recognizer = tf.keras.models.load_model('./serialized/gender_recognizer_bo.h5')
 
 # Load models and encoder
 with open('./serialized/name_recognizer/svm.pkl', 'rb') as f:
@@ -44,7 +44,9 @@ def get_name(face, threshold=0.6):
 
 
 def get_gender(face):
-    reshaped_face = cv2.resize(face, (64, 64))
+    img = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
+    reshaped_face = cv2.resize(img, (64, 64))
+    reshaped_face = reshaped_face[:, :, np.newaxis]
     reshaped_face = np.expand_dims(reshaped_face, axis=0)
     gender_prediction = gender_recognizer.predict(reshaped_face)
     print('gender : ', gender_prediction)

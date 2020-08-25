@@ -15,8 +15,8 @@ def identify(image):
         gender = get_gender(face)
         name = get_name(face, threshold=0.3)
 
-        arr.append([face_coords[0], face_coords[1], face_coords[2], face_coords[3],
-                    age, gender, name])
+        arr.append((face_coords[0], face_coords[1], face_coords[2], face_coords[3],
+                    age, gender, name))
     return arr
 
 

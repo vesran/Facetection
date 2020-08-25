@@ -29,8 +29,9 @@ images = []
 genders = []
 for filename in tqdm(filenames):
     face = cv2.imread(op.join(DATA_DIR, filename), cv2.IMREAD_COLOR)
-    face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
+    face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
     face = cv2.resize(face, (64, 64))
+    face = face[:, :, np.newaxis]
     arr = filename.split('_')
     genders.append(int(arr[1]))
     images.append(face)
@@ -40,32 +41,34 @@ genders = np.array(genders)
 
 
 # Write a few images
-print('--- Write images in Tensoboard')
-with file_writer.as_default():
-    images_examples = images[:12]
-    tf.summary.image('Training images example', images_examples, max_outputs=12, step=0)
+# print('--- Write images in Tensorboard')
+# with file_writer.as_default():
+#     images_examples = images[:12]
+#     tf.summary.image('Training images example', images_examples, max_outputs=12, step=0)
 
 
 # Model
 def gen_model():
-    inputs = tf.keras.layers.Input(shape=(64, 64, 3))
+    inputs = tf.keras.layers.Input(shape=(64, 64, 1))
 
     x = inputs
-    x = layers.Conv2D(64, 4, activation='relu')(x)
-    # x = layers.Conv2D(64, 4, activation='relu')(x)
+
+    x = layers.Conv2D(32, 4, activation='relu')(x)
+    x = layers.BatchNormalization(axis=-1)(x)
     x = layers.MaxPool2D(2)(x)
     x = layers.Dropout(0.2)(x)
-    x = layers.Conv2D(32, 3, activation='relu')(x)
-    # x = layers.Conv2D(64, 3, activation='relu')(x)
-    x = layers.MaxPool2D(2)(x)
-    # x = layers.Dropout(0.2)(x)
-    # x = layers.Conv2D(16, 3, activation='relu')(x)
-    # x = layers.Dropout(0.1)(x)
-    x = layers.Flatten()(x)
-    x1 = layers.Dense(64, activation='relu')(x)
-    x1 = layers.Dense(1, activation='sigmoid', name='gender_out')(x1)
 
-    model = tf.keras.models.Model(inputs=inputs, outputs=[x1])
+    x = layers.Conv2D(32, 3, activation='relu')(x)
+    x = layers.BatchNormalization(axis=-1)(x)
+    x = layers.MaxPool2D(2)(x)
+    x = layers.Dropout(0.2)(x)
+
+    x = layers.Flatten()(x)
+    x = layers.Dense(64, activation='relu')(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Dense(1, activation='sigmoid', name='gender_out')(x)
+
+    model = tf.keras.models.Model(inputs=inputs, outputs=[x])
 
     model.compile(optimizer='Adam', loss=['binary_crossentropy'], metrics=['acc'])
     return model
