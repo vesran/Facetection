@@ -1,4 +1,4 @@
-from facetection.dataset.embeddings import pickle_dataset
+from dev.facetection_old.dataset.embeddings import pickle_dataset
 
 import os
 import pickle

@@ -1,10 +1,7 @@
 import tensorflow as tf
-import numpy as np
-import pickle
-import os
 import cv2
 
-from facetection.dataset.io_records import parse_data, read_utkface_tfrecord
+from dev.facetection_old.dataset.io_records import parse_data, read_utkface_tfrecord
 
 
 BATCH_SIZE = 32
@@ -22,6 +19,21 @@ labelled_ds = init_ds.map(parse_data)
 shuffled_ds = labelled_ds.shuffle(128)
 
 batched_ds = shuffled_ds.batch(BATCH_SIZE)
+embedder = cv2.dnn.readNetFromTorch("./serialized/face_embedding_model/openface.nn4.small2.v1.t7")
+
+
+def embed_images(images):
+    face_blob = cv2.dnn.blobFromImages(images.numpy(), 1.0, (96, 96), (0, 0, 0), swapRB=True, crop=False)
+    embedder.setInput(face_blob)
+    vec = embedder.forward()
+    return vec
+
+
+def tf_embed_images(images, label):
+    return tf.py_function(embed_images, [images], Tout=tf.float32), label
+
+
+embedded_ds = batched_ds.map(tf_embed_images)
 
 #################################################################################
 # Import FaceNet embedder
@@ -65,19 +77,6 @@ class FaceNetEmbedder(tf.keras.layers.Layer):
 #################################################################################
 # Training model
 #################################################################################
-
-# model = tf.keras.Sequential()
-#
-# model.add(a := FaceNetEmbedder())
-# model.add(b := tf.keras.layers.Dense(64, activation='relu'))
-# model.add(c := tf.keras.layers.Dense(1, activation='sigmoid'))
-#
-# model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
-#
-# model.fit(batched_ds, epochs=EPOCHS)
-
-
-#####################################################################################
 
 
 class FNModel(tf.keras.layers.Layer):

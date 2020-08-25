@@ -3,7 +3,7 @@ import yaml
 import imutils
 
 from facetection.ai.recognize_name import recognize_face_name
-from facetection.ai.face_detection import detect_face_box
+from dev.facetection_old.ai.face_detection import detect_face_box
 
 
 with open('./parameters.yaml', 'r') as f:

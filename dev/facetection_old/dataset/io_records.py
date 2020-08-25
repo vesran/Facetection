@@ -35,6 +35,10 @@ def write_utkface_record(input_dir, output_file):
         gender = int(labels[1])
         race = int(labels[2])
 
+        # if age > 100:
+        #     print(f'[INFO] age {age} in {img_path} not considered.')
+        #     continue
+
         img_raw = img.tostring()
 
         # Convert to tf.Example
@@ -65,17 +69,10 @@ def _parse_image_function(example_proto):
     return parsed
 
 
-def read_utkface_tfrecord(tfrecords_path, label=None):
+def read_utkface_tfrecord(tfrecords_path):
     raw_image_dataset = tf.data.TFRecordDataset(tfrecords_path)
     parsed_image_dataset = raw_image_dataset.map(_parse_image_function)
     return parsed_image_dataset
-
-
-def decode_image(tf_image_raw):
-    image_raw = tf_image_raw.numpy()
-    img_1d = np.frombuffer(image_raw, dtype=np.uint8)
-    reconstructed_img = img_1d.reshape((params['face_resolution'][0], params['face_resolution'][0], -1))
-    return reconstructed_img
 
 
 def parse_data(features, label='gender'):

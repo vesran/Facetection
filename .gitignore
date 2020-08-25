@@ -5,6 +5,9 @@ Pipfile
 Pipfile.lock
 .idea
 .ipynb_checkpoints
-facetection/dataset/__pycache__/
 *.tfrecords
 *.tfrecord
+*.h5
+tf_facenet
+__pycache__
+logs
