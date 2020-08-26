@@ -11,3 +11,4 @@ Pipfile.lock
 tf_facenet
 __pycache__
 logs
+tmp

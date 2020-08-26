@@ -32,6 +32,9 @@ def find_faces(image):
             # compute the (x, y)-coordinates of the bounding box for the face
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (start_x, start_y, end_x, end_y) = box.astype("int")
-            face_coords.append([start_x, end_x, start_y, end_y, confidence])
+            width = end_x - start_x
+            height = end_y - start_y
+            max_length = max(width, height)
+            face_coords.append([start_x, start_x + max_length, start_y, start_y + max_length, confidence])
 
     return face_coords
