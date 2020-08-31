@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random as rand
 from datetime import datetime
+from tqdm import tqdm
 from tensorflow.keras import layers
 
 
@@ -25,10 +26,10 @@ file_writer = tf.summary.create_file_writer(LOG_DIR)
 # Read all images
 images = []
 ages = []
-for filename in filenames:
+for filename in tqdm(filenames):
     face = cv2.imread(op.join(DATA_DIR, filename), cv2.IMREAD_COLOR)
     face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
-    face = cv2.resize(face, (32, 32))
+    face = cv2.resize(face, (128, 128))
     arr = filename.split('_')
     ages.append(int(arr[0]))
     images.append(face)

@@ -1,7 +1,7 @@
 import cv2
 
 from facetection.face_detection import find_faces
-from facetection.predict import get_name, get_age, get_gender
+from facetection.predict import get_name, get_age, get_gender, get_age_gender
 
 
 def identify(image):
@@ -13,7 +13,8 @@ def identify(image):
         face = image[face_coords[2]:face_coords[3], face_coords[0]:face_coords[1]]
         age = get_age(face)
         gender = get_gender(face)
-        name = get_name(face, threshold=0.3)
+        # age, gender = get_age_gender(face)
+        name = get_name(face, threshold=0.5)
 
         arr.append((face_coords[0], face_coords[1], face_coords[2], face_coords[3],
                     age, gender, name))
@@ -38,7 +39,7 @@ def add_info_on_image(ids_info, frame):
 
 
 if __name__ == '__main__':
-    test_image = './images/test_yves.jpg'
+    test_image = './images/ross_geller.jpg'
     image = cv2.imread(test_image)
     ids_info = identify(image)
     add_info_on_image(ids_info, image)
