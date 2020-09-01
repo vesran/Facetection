@@ -2,9 +2,9 @@
 Face detection, age & gender recognition from streaming, videos, photos...
 
 
-# Getting started
+## Getting started
 
-## Introduction
+### Introduction
 
 This is a Computer Vision project based on Deep Learning models to predict carateristics from an image of a person's face. Faces can be detected through several media : 
 * Video
@@ -12,7 +12,7 @@ This is a Computer Vision project based on Deep Learning models to predict carat
 * Digital images
 
 
-## Dependencies
+### Dependencies
 
 Python 3.8
 
@@ -22,13 +22,13 @@ Python 3.8
 * face-recognition (for face embeddings)
 
 
-## Usage
+### Usage
 
 *TO DO*
 
-# Workflow
+## Workflow
 
-## Dataset
+### Dataset
 
 Models are have been trained on the UTKFace dataset. It provides a large-scale face dataset with long age span (range from 0 to 116 years old). The dataset consists of over 20,000 face images with annotations of age, gender, and ethnicity. The images cover large variation in pose, facial expression, illumination, occlusion, resolution, etc. 
 
@@ -51,10 +51,10 @@ datasets/
   ...
 ```
 
-## Age recognition
+### Age recognition
 
-## Gender recognition
+### Gender recognition
 
-## Name recognition
+### Name recognition
 
-# Acknownledgement
+## Acknownledgement
