@@ -1,5 +1,5 @@
 datasets
-images
+images/local
 tut_*
 Pipfile
 Pipfile.lock
