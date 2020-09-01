@@ -1,5 +1,5 @@
 # Facetection
-Face detection, age & gender recognition from streaming, videos, photos...
+Face detection, age, name & gender recognition from streaming, videos, photos...
 
 
 ## Getting started
