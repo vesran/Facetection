@@ -11,6 +11,8 @@ This is a Computer Vision project based on Deep Learning models to predict carat
 * Webcam
 * Digital images
 
+<img src="images/friends1.jpg" width="500" title="Example">
+
 
 ### Dependencies
 
