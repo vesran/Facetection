@@ -16,9 +16,9 @@ def identify(image):
         print(face.shape)
         # age, gender, name = Parallel(n_jobs=3)([delayed(get_age)(face), delayed(get_gender)(face), delayed(get_name)(face)])
 
-        age = 0 #get_age(face)
-        gender = get_gender(face)
-        name = get_name(face, threshold=0.5)
+        age = get_age(face)
+        gender = ""#get_gender(face)
+        name = ""#get_name(face, threshold=0.5)
 
         arr.append((face_coords[0], face_coords[1], face_coords[2], face_coords[3],
                     age, gender, name))
@@ -41,13 +41,3 @@ def add_info_on_image(ids_info, frame):
         cv2.putText(frame, age_gender_text, (start_x, start_y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
         cv2.putText(frame, name, (start_x, start_y - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
-
-if __name__ == '__main__':
-    test_image = './images/ross_geller.jpg'
-    image = cv2.imread(test_image)
-    ids_info = identify(image)
-    add_info_on_image(ids_info, image)
-
-    cv2.imshow('img', image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()

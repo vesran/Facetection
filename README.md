@@ -72,7 +72,7 @@ Considering outliers as images where we cannot distinguish faces's ROI, 37 files
 
 ### Preprocessing
 
-Images have been scaled down to 128x128 so that it is less memory-consuming. RGB channels have been kept. 
+Images have been scaled down to 128x128 so that it is less memory-consuming. RGB channels have been kept. Pixels values have been divided by 255.
 
 ### Gender recognition
 
@@ -90,22 +90,19 @@ learning rate : 1e-4
 
 ### Age recognition
 
-In the same proportion as before, the model reached a MAE of {} on validation set and {} on test set. Note that ages have been divided by 116 which is the maximum age in the dataset for normalization.
+In the same proportion as before, the model reached a MAE of 0.05 on validation set. Note that ages have been divided by 116 which is the maximum age in the dataset for normalization.
 
 ```
-loss :
-batch_size :
-epochs :
-learning rate : 
+loss : mean absolute error (since ages have been normalized)
+batch_size : 256
+epochs : 75
+learning rate : 1e-4
 ```
 
 <img src="images/age_loss.jpg" width="400">
 
-### Name recognition
 
-
-
-## Acknownledgement
+## Acknowledgement
 
 * https://www.kaggle.com/werty12121/utkface-age-and-sex-prediction
 * https://github.com/rodrigobressan/keras-multi-output-model-utk-face

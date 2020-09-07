@@ -7,7 +7,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random as rand
 from datetime import datetime
-from tensorflow.keras import layers
 import pickle
 
 
@@ -54,30 +53,46 @@ with file_writer.as_default():
 
 # Model
 def gen_model():
-    inputs = tf.keras.layers.Input(shape=(128, 128, 1))
+    inputs = tf.keras.Input(shape=(128, 128, 3))
 
-    x = inputs
+    ax = inputs
 
-    x = layers.Conv2D(32, 4, activation='relu')(x)
-    x = layers.Conv2D(64, 4, activation='relu')(x)
-    x = layers.MaxPool2D(2)(x)
-    x = layers.BatchNormalization(axis=-1)(x)
-    x = layers.Dropout(0.2)(x)
+    ax = tf.keras.layers.BatchNormalization(axis=-1)(ax)
 
-    # x = layers.Conv2D(64, 3, activation='relu')(x)
-    # x = layers.BatchNormalization(axis=-1)(x)
-    # x = layers.MaxPool2D(2)(x)
-    # x = layers.Dropout(0.2)(x)
+    ax = tf.keras.layers.Conv2D(32, 14, activation='relu')(ax)
+    ax = tf.keras.layers.Conv2D(64, 7, activation='relu')(ax)
+    ax = tf.keras.layers.MaxPooling2D(2)(ax)
+    ax = tf.keras.layers.BatchNormalization(axis=-1)(ax)
+    ax = tf.keras.layers.Dropout(0.2)(ax)
 
-    x = layers.Flatten()(x)
-    x = layers.Dense(64, activation='relu')(x)
-    x = layers.BatchNormalization()(x)
-    x = layers.Dense(1, activation='sigmoid', name='gender_out')(x)
+    ax = tf.keras.layers.Conv2D(64, 5, activation='relu')(ax)
+    ax = tf.keras.layers.Conv2D(84, 3, activation='relu')(ax)
+    ax = tf.keras.layers.MaxPooling2D(2)(ax)
+    ax = tf.keras.layers.BatchNormalization(axis=-1)(ax)
+    ax = tf.keras.layers.Dropout(0.2)(ax)
 
-    model = tf.keras.models.Model(inputs=inputs, outputs=[x])
+    ax = tf.keras.layers.Conv2D(32, 3, activation='relu')(ax)
+    ax = tf.keras.layers.MaxPooling2D(2)(ax)
+    ax = tf.keras.layers.BatchNormalization(axis=-1)(ax)
+    ax = tf.keras.layers.Dropout(0.2)(ax)
 
-    model.compile(optimizer='Adam', loss=['binary_crossentropy'], metrics=['acc'])
-    return model
+    ax = tf.keras.layers.Flatten()(ax)
+
+    ax = tf.keras.layers.Dense(128, activation='relu')(ax)
+    ax = tf.keras.layers.BatchNormalization(axis=-1)(ax)
+    ax = tf.keras.layers.Dense(64, activation='relu')(ax)
+    ax = tf.keras.layers.Dense(2, activation='softmax', name='gender')(ax)
+
+    outputs = [ax]
+
+    model = tf.keras.Model(inputs=inputs, outputs=outputs, name='model')
+
+    lr = 1.e-4
+    epochs = 1000
+    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr, decay=lr / epochs),
+                  loss=['categorical_crossentropy'],
+                  metrics=['acc']
+                  )
 
 
 # Splitting data
@@ -95,7 +110,7 @@ callbacks = [
     tf.keras.callbacks.EarlyStopping(patience=30, monitor='val_acc', restore_best_weights=True),
     tf.keras.callbacks.TensorBoard(LOG_DIR, histogram_freq=1)
 ]
-model.fit(X_train, y_train, epochs=1000, batch_size=64, validation_data=(X_valid, y_valid),
+model.fit(X_train, y_train, epochs=1000, batch_size=128, validation_data=(X_valid, y_valid),
           callbacks=callbacks, shuffle=True)
 
 

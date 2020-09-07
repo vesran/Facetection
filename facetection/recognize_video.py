@@ -36,4 +36,4 @@ def recognize_from_video(video_path):
 
 
 if __name__ == '__main__':
-    recognize_from_video('./images/local/friends_scene2.mp4')
+    recognize_from_video('./images/local/chandler_alone.mp4')

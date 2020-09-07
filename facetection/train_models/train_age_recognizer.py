@@ -46,26 +46,47 @@ with file_writer.as_default():
 
 # Model
 def gen_model():
-    inputs = tf.keras.layers.Input(shape=(32, 32, 3))
+    inputs = tf.keras.Input(shape=(128, 128, 3))
 
-    x = inputs
-    x = layers.Conv2D(32, 3, activation='relu')(x)
-    x = layers.Conv2D(32, 3, activation='relu')(x)
-    x = layers.MaxPool2D(2)(x)
-    x = layers.Dropout(0.3)(x)
-    x = layers.Conv2D(64, 3, activation='relu')(x)
-    x = layers.Conv2D(64, 3, activation='relu')(x)
-    x = layers.MaxPool2D(2)(x)
-    x = layers.Dropout(0.3)(x)
-    x = layers.Conv2D(84, 3, activation='relu')(x)
-    x = layers.Dropout(0.3)(x)
-    x = layers.Flatten()(x)
-    x_age = layers.Dense(64, activation='relu')(x)
-    x_age = layers.Dense(1, activation='relu', name='age_out')(x_age)
+    ax = inputs
 
-    model = tf.keras.models.Model(inputs=inputs, outputs=[x_age])
+    ax = tf.keras.layers.BatchNormalization(axis=-1)(ax)
 
-    model.compile(optimizer='Adam', loss=['mae'])
+    ax = tf.keras.layers.Conv2D(32, 12, activation='relu', padding='same')(ax)
+    ax = tf.keras.layers.Conv2D(32, 12, activation='relu', padding='same')(ax)
+    ax = tf.keras.layers.MaxPooling2D(2)(ax)
+    ax = tf.keras.layers.BatchNormalization(axis=-1)(ax)
+    ax = tf.keras.layers.Dropout(0.2)(ax)
+
+    ax = tf.keras.layers.Conv2D(32, 5, activation='relu', padding='same')(ax)
+    ax = tf.keras.layers.Conv2D(32, 3, activation='relu', padding='same')(ax)
+    ax = tf.keras.layers.MaxPooling2D(2)(ax)
+    ax = tf.keras.layers.BatchNormalization(axis=-1)(ax)
+    ax = tf.keras.layers.Dropout(0.2)(ax)
+
+    ax = tf.keras.layers.Conv2D(32, 3, activation='relu', padding='same')(ax)
+    ax = tf.keras.layers.MaxPooling2D(2)(ax)
+    ax = tf.keras.layers.BatchNormalization(axis=-1)(ax)
+    ax = tf.keras.layers.Dropout(0.2)(ax)
+
+    ax = tf.keras.layers.Flatten()(ax)
+
+    ax = tf.keras.layers.Dense(128, activation='relu')(ax)
+    ax = tf.keras.layers.BatchNormalization(axis=-1)(ax)
+    ax = tf.keras.layers.Dense(64, activation='relu')(ax)
+    ax = tf.keras.layers.BatchNormalization(axis=-1)(ax)
+    ax = tf.keras.layers.Dense(32, activation='relu')(ax)
+    ax = tf.keras.layers.Dense(1, activation='relu', name='age')(ax)
+
+    outputs = [ax]
+
+    model = tf.keras.Model(inputs=inputs, outputs=outputs, name='model')
+
+    lr = 1.e-4
+    epochs = 1000
+    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr, decay=lr / epochs),
+                  loss=['mae'],
+                  )
     return model
 
 
