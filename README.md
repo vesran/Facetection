@@ -10,7 +10,7 @@ This is a Computer Vision project based on Deep Learning models to predict carat
 * Webcam
 * Digital images
 
-<img src="images/friends1.jpg" width="500" title="Example">
+<img src="images/friends1.jpg" width="600" title="Example">
 
 
 ### Dependencies
@@ -86,7 +86,7 @@ epochs : 35
 learning rate : 1e-4
 ```
 
-<img src="images/gender_loss.jpg" width="300"> <img src="images/gender_acc.jpg" width="300">
+<img src="images/gender_loss.jpg" width="400"> <img src="images/gender_acc.jpg" width="400">
 
 ### Age recognition
 
@@ -99,7 +99,7 @@ epochs :
 learning rate : 
 ```
 
-<img src="images/age_loss.jpg" width="300">
+<img src="images/age_loss.jpg" width="400">
 
 ### Name recognition
 
