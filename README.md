@@ -72,7 +72,7 @@ Considering outliers as images where we cannot distinguish faces's ROI, 37 files
 
 ### Preprocessing
 
-Images have been scaled down to 128x128 so that it is less memory-consuming. RGB channels has been kept. 
+Images have been scaled down to 128x128 so that it is less memory-consuming. RGB channels have been kept. 
 
 ### Gender recognition
 
@@ -86,7 +86,7 @@ epochs : 35
 learning rate : 1e-4
 ```
 
-<img src="images/gender_loss.jpg width="300"> <img src="images/gender_acc.jpg width="300">
+<img src="images/gender_loss.jpg" width="300"> <img src="images/gender_acc.jpg" width="300">
 
 ### Age recognition
 
@@ -99,7 +99,7 @@ epochs :
 learning rate : 
 ```
 
-<img src="images/age_loss.jpg width="300">
+<img src="images/age_loss.jpg" width="300">
 
 ### Name recognition
 
