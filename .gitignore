@@ -12,3 +12,4 @@ tf_facenet
 __pycache__
 logs
 tmp
+_dev
