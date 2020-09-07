@@ -5,7 +5,7 @@ Face detection, age, name & gender recognition from streaming, videos, photos...
 
 ### Introduction
 
-This is a Computer Vision project based on Deep Learning models to predict carateristics from an image of a person's face. Faces can be detected through several media : 
+This is a Computer Vision project based on Deep Learning models to predict carateristics from person's face. Faces can be detected through several media : 
 * Video
 * Webcam
 * Digital images
