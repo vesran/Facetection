@@ -1,24 +1,21 @@
 import cv2
-from joblib import Parallel, delayed
 
 from facetection.face_detection import find_faces
 from facetection.predict import get_name, get_age, get_gender
-from multiprocessing import Pool
 
 
 def identify(image):
     arr = []
     faces_coords = find_faces(image)
-    print(faces_coords)
-    print()
+    # print(faces_coords)
+    # print()
     for face_coords in faces_coords:
         face = image[face_coords[2]:face_coords[3], face_coords[0]:face_coords[1]]
-        print(face.shape)
-        # age, gender, name = Parallel(n_jobs=3)([delayed(get_age)(face), delayed(get_gender)(face), delayed(get_name)(face)])
+        # print(face.shape)
 
         age = get_age(face)
-        gender = ""#get_gender(face)
-        name = ""#get_name(face, threshold=0.5)
+        gender = get_gender(face)
+        name = get_name(face, threshold=0.5)
 
         arr.append((face_coords[0], face_coords[1], face_coords[2], face_coords[3],
                     age, gender, name))
