@@ -1,7 +1,6 @@
 # Facetection
 Face detection, age, name & gender recognition from streaming, videos, photos...
 
-
 ## Getting started
 
 ### Introduction
@@ -71,10 +70,44 @@ Considering outliers as images where we cannot distinguish faces's ROI, 37 files
 
 <img src="images/outliers.jpg" width="800" title="Outliers UTKFace">
 
-### Age recognition
+### Preprocessing
+
+Images have been scaled down to 128x128 so that it is less memory-consuming. RGB channels has been kept. 
 
 ### Gender recognition
 
+Train on 70% of the UTKFace dataset (30% reserved for validation), the model reached a 90% accuracy on the validation set and test set.
+The model is a DCNN and outputs a score indicating a probability/confidence on both gender. The final activation function is a *softmax* function. 
+
+```
+loss : categorical_crossentropy
+batch_size : 128
+epochs : 35
+learning rate : 1e-4
+```
+
+<img src="images/gender_loss.jpg width="300"> <img src="images/gender_acc.jpg width="300">
+
+### Age recognition
+
+In the same proportion as before, the model reached a MAE of {} on validation set and {} on test set. Note that ages have been divided by 116 which is the maximum age in the dataset for normalization.
+
+```
+loss :
+batch_size :
+epochs :
+learning rate : 
+```
+
+<img src="images/age_loss.jpg width="300">
+
 ### Name recognition
 
+
+
 ## Acknownledgement
+
+* https://www.kaggle.com/werty12121/utkface-age-and-sex-prediction
+* https://github.com/rodrigobressan/keras-multi-output-model-utk-face
+
+

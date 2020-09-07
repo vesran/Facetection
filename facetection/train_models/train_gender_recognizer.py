@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import random as rand
 from datetime import datetime
 from tensorflow.keras import layers
+import pickle
 
 
 def imshow(img):
@@ -30,7 +31,7 @@ genders = []
 for filename in tqdm(filenames):
     face = cv2.imread(op.join(DATA_DIR, filename), cv2.IMREAD_COLOR)
     face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-    face = cv2.resize(face, (64, 64))
+    face = cv2.resize(face, (128, 128))
     face = face[:, :, np.newaxis]
     arr = filename.split('_')
     genders.append(int(arr[1]))
@@ -39,29 +40,34 @@ for filename in tqdm(filenames):
 images = np.array(images)
 genders = np.array(genders)
 
+with open('./serialized/tmp/gender_images_128.pkl', 'wb') as f:
+    t = (images, genders)
+    pickle.dump(t, f)
+
 
 # Write a few images
-# print('--- Write images in Tensorboard')
-# with file_writer.as_default():
-#     images_examples = images[:12]
-#     tf.summary.image('Training images example', images_examples, max_outputs=12, step=0)
+print('--- Write images in Tensorboard')
+with file_writer.as_default():
+    images_examples = images[:5]
+    tf.summary.image('Training images example', images_examples, max_outputs=5, step=0)
 
 
 # Model
 def gen_model():
-    inputs = tf.keras.layers.Input(shape=(64, 64, 1))
+    inputs = tf.keras.layers.Input(shape=(128, 128, 1))
 
     x = inputs
 
     x = layers.Conv2D(32, 4, activation='relu')(x)
-    x = layers.BatchNormalization(axis=-1)(x)
+    x = layers.Conv2D(64, 4, activation='relu')(x)
     x = layers.MaxPool2D(2)(x)
+    x = layers.BatchNormalization(axis=-1)(x)
     x = layers.Dropout(0.2)(x)
 
-    x = layers.Conv2D(32, 3, activation='relu')(x)
-    x = layers.BatchNormalization(axis=-1)(x)
-    x = layers.MaxPool2D(2)(x)
-    x = layers.Dropout(0.2)(x)
+    # x = layers.Conv2D(64, 3, activation='relu')(x)
+    # x = layers.BatchNormalization(axis=-1)(x)
+    # x = layers.MaxPool2D(2)(x)
+    # x = layers.Dropout(0.2)(x)
 
     x = layers.Flatten()(x)
     x = layers.Dense(64, activation='relu')(x)
@@ -86,12 +92,11 @@ y_valid = genders[n:]
 print('--- Create & train model')
 model = gen_model()
 callbacks = [
-    tf.keras.callbacks.EarlyStopping(patience=5, monitor='val_acc', restore_best_weights=True),
+    tf.keras.callbacks.EarlyStopping(patience=30, monitor='val_acc', restore_best_weights=True),
     tf.keras.callbacks.TensorBoard(LOG_DIR, histogram_freq=1)
 ]
-model.fit(X_train, y_train, epochs=100, batch_size=256, validation_data=(X_valid, y_valid),
+model.fit(X_train, y_train, epochs=1000, batch_size=64, validation_data=(X_valid, y_valid),
           callbacks=callbacks, shuffle=True)
-
 
 
 # model.evaluate(X_valid, y_valid)

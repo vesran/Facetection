@@ -14,7 +14,7 @@ images = "./images"
 # Resolution
 
 face_resolution = (200, 200)
-video_resolution = (1000, 800)
+video_resolution = (1200, 1000)
 
 
 # Face detector's confidence
