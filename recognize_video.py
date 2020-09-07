@@ -9,9 +9,9 @@ def recognize_from_video(video_path):
     cap = cv2.VideoCapture(video_path)
     video_resolution = params.video_resolution
 
-    frame_width = int(cap.get(3))
-    frame_height = int(cap.get(4))
-    out = cv2.VideoWriter('./images/friend_scene_output.mp4', cv2.VideoWriter_fourcc(*'MP4V'), 20, (frame_width, frame_height))
+    # frame_width = int(cap.get(3))
+    # frame_height = int(cap.get(4))
+    # out = cv2.VideoWriter('./images/friend_scene_output.mp4', cv2.VideoWriter_fourcc(*'MP4V'), 20, (frame_width, frame_height))
 
     while cap.isOpened():
         _, frame = cap.read()
@@ -28,9 +28,9 @@ def recognize_from_video(video_path):
 
         # Display frame
         cv2.imshow('frame', frame)
-        out.write(frame)
+        # out.write(frame)
 
-    out.release()
+    # out.release()
     cap.release()
     cv2.destroyAllWindows()
 
