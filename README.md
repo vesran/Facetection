@@ -22,11 +22,6 @@ Python 3.8
 * OpenCV 4.+
 * face-recognition (for face embeddings)
 
-
-### Usage
-
-*TO DO*
-
 ## Workflow
 
 ### Data
